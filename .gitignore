@@ -19,6 +19,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
 # Virtual Environment
 venv/
@@ -38,3 +39,22 @@ env/
 # OS
 .DS_Store
 Thumbs.db 
+
+# 🔒 보안 관련 파일들 (GitHub에 업로드 금지)
+credentials.json
+secrets.toml
+.env
+.streamlit/secrets.toml
+
+# 🗂️ 개발 환경 및 임시 파일들
+quiz_venv/
+folder_ai_venv/
+*.log
+*.tmp
+.DS_Store
+processed_temp.jpg
+
+# 📁 개발용 폴더들
+frames/
+processed_frames/
+templates/ 
