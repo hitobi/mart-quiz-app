@@ -352,8 +352,20 @@ class MobileQuizApp:
             # secrets에서 자동으로 데이터 로드
             if not st.session_state.questions_data:
                 try:
+                    # 🔍 디버깅 정보 추가
+                    st.write("🔍 **디버깅 정보:**")
+                    st.write(f"- Cloud 환경 감지: {is_cloud_deployment}")
+                    
+                    # Secrets 확인
+                    all_secrets = dict(st.secrets)
+                    st.write(f"- 전체 Secrets 키: {list(all_secrets.keys())}")
+                    
                     spreadsheet_id = st.secrets.get("spreadsheet_id", "")
+                    st.write(f"- spreadsheet_id 값: '{spreadsheet_id}'")
+                    st.write(f"- spreadsheet_id 길이: {len(spreadsheet_id)}")
+                    
                     if spreadsheet_id:
+                        st.write("✅ 스프레드시트 ID 발견! 데이터 로드 시도 중...")
                         with st.spinner("📊 퀴즈 데이터를 불러오는 중..."):
                             service = self.authenticate_google_sheets()
                             if service:
@@ -364,9 +376,17 @@ class MobileQuizApp:
                                 else:
                                     st.error("❌ 데이터 로드 실패 - 관리자에게 문의하세요")
                     else:
-                        st.error("❌ 스프레드시트 ID가 설정되지 않았습니다 - 관리자에게 문의하세요")
+                        st.error(f"❌ 스프레드시트 ID가 설정되지 않았습니다")
+                        st.write("📋 **해결 방법:**")
+                        st.write("1. Streamlit Cloud → Settings → Secrets")
+                        st.write("2. 'spreadsheet_id = \"your_id_here\"' 추가")
+                        st.write("3. Save → Reboot app")
+                        
                 except Exception as e:
-                    st.error(f"❌ 설정 오류: {str(e)} - 관리자에게 문의하세요")
+                    st.error(f"❌ 설정 오류: {str(e)}")
+                    st.write(f"🔍 오류 세부사항: {type(e).__name__}")
+                    import traceback
+                    st.code(traceback.format_exc())
         
         # 💻 로컬 개발 환경: 설정 UI 표시
         else:
